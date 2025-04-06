@@ -17,7 +17,7 @@ namespace AMR.RN
         {
             _habitacionDA = habitacionDA;
         }
-        public async Task<IEnumerable<TipoHabitacionEntidad>> ConsultarDisponibilidad(DateTime fechaInicio, DateTime fechaFin, int idTipoHabitacion)
+        public async Task<string> ConsultarDisponibilidad(DateTime fechaInicio, DateTime fechaFin, int idTipoHabitacion)
         {
             return await this._habitacionDA.ConsultarDisponibilidad(fechaInicio,fechaFin,idTipoHabitacion);
         }
