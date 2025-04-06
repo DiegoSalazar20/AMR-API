@@ -80,7 +80,7 @@ namespace AMR.DA
                 decimal precioConTemporada = precioBase;
 
                 var temporada = temporadas.FirstOrDefault(t =>
-                    IsInRangeIgnoringYear(dia, t.Fecha_inicio, t.Fecha_final));
+                    ValidarFechasSinAnio(dia, t.Fecha_inicio, t.Fecha_final));
                 if (temporada != null)
                 {
                     precioConTemporada = precioBase + (precioBase * temporada.Descuento / 100m);
@@ -98,14 +98,8 @@ namespace AMR.DA
             }
             return total;
         }
-
-        /// <summary>
-        /// Determina si un día (ignorando el año) está dentro de un rango definido por inicioFecha y finFecha.
-        /// Para la validación de temporadas se normalizan las fechas usando un año fijo (2000).
-        /// </summary>
-        private bool IsInRangeIgnoringYear(DateTime dia, DateTime inicioFecha, DateTime finFecha)
+        private bool ValidarFechasSinAnio(DateTime dia, DateTime inicioFecha, DateTime finFecha)
         {
-            // Normalizar el día evaluado usando su Month y Day (año fijo 2000)
             DateTime normalizedDia = new DateTime(2000, dia.Month, dia.Day);
             DateTime normalizedInicio = new DateTime(2000, inicioFecha.Month, inicioFecha.Day);
             DateTime normalizedFin = new DateTime(2000, finFecha.Month, finFecha.Day);
@@ -116,7 +110,6 @@ namespace AMR.DA
             }
             else
             {
-                // Rango que cruza el año (por ejemplo, del 12-01 al 03-01)
                 return normalizedDia >= normalizedInicio || normalizedDia <= normalizedFin;
             }
         }
