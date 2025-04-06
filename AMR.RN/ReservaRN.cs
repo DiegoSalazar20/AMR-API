@@ -20,9 +20,9 @@ namespace AMR.RN
             _reservaDA = reservaDA;
         }
 
-        public async Task<(bool, string)> RegistrarReserva(Reserva reserva)
+        public async Task<(bool, string)> RegistrarReserva(int idTipoHabitacion, string nombre, string apellido, string correo, string tarjeta, DateTime fechaLlegada, DateTime fechaSalida)
         {
-            return await this._reservaDA.RegistrarReserva(reserva);
+            return await this._reservaDA.RegistrarReserva(idTipoHabitacion, nombre, apellido, correo, tarjeta, fechaLlegada, fechaSalida);
         }
     }
 }
