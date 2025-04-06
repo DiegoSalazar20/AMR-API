@@ -22,5 +22,7 @@ namespace AMR.DA.Contexto
         public DbSet<ReservaEntidad> Reserva { get; set; }
         public DbSet<TemporadaEntidad> Temporada { get; set; }
         public DbSet<OfertaEntidad> Ofertas { get; set; }
+
+        public DbSet<ComoLlegarEntidad> ComoLlegar { get; set; }
     }
 }

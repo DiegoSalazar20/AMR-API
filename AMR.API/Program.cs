@@ -33,6 +33,9 @@ builder.Services.AddScoped<IHabitacionDA, HabitacionDA>();
 builder.Services.AddScoped<ITipoHabitacionRN, TipoHabitacionRN>();
 builder.Services.AddScoped<ITipoHabitacionDA, TipoHabitacionDA>();
 
+builder.Services.AddScoped<IComoLlegarRN, ComoLlegarRN>();
+builder.Services.AddScoped<IComoLlegarDA, ComoLlegarDA>();
+
 
 //Conexión a BD
 builder.Services.AddDbContext<ContextoBD>(options =>
