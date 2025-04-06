@@ -21,10 +21,8 @@ namespace AMR.DA
             _context = context;
         }
 
-        public async Task<(bool, string)> RegistrarReserva(Reserva reserva)
+        public async Task<(bool, string)> RegistrarReserva(int idTipoHabitacion, string nombre, string apellido, string correo, string tarjeta, DateTime fechaLlegada, DateTime fechaSalida)
         {
-            if (reserva == null)
-                return (false, null);
 
             string codigoReserva;
             do
@@ -40,22 +38,32 @@ namespace AMR.DA
             }
             while (await _context.Reserva.AnyAsync(r => r.NumeroTransaccion == numeroTransaccion));
 
+            var habitacionDisponible = await _context.Habitacion.FirstOrDefaultAsync(h =>
+                h.IdTipoHabitacion == idTipoHabitacion &&
+                !_context.Reserva.Any(r => r.IdHabitacion == h.IdHabitacion &&
+                    r.FechaLlegada < fechaSalida && r.FechaSalida > fechaLlegada));
+
+            if (habitacionDisponible == null)
+            {
+                return (false, "No hay habitaciones disponibles para esas fechas.");
+            }
+
             ReservaEntidad entidad = new ReservaEntidad
             {
                 CodigoReserva = codigoReserva,
                 NumeroTransaccion = numeroTransaccion,
-                IdHabitacion = reserva.IdHabitacion,
-                Nombre = reserva.Nombre,
-                Apellidos = reserva.Apellidos,
-                Email = reserva.Email,
-                Tarjeta = reserva.Tarjeta,
-                FechaLlegada = reserva.FechaLlegada,
-                FechaSalida = reserva.FechaSalida,
+                IdHabitacion = habitacionDisponible.IdHabitacion,
+                Nombre = nombre,
+                Apellidos = apellido,
+                Email = correo,
+                Tarjeta = tarjeta,
+                FechaLlegada = fechaLlegada,
+                FechaSalida = fechaSalida
             };
 
             await _context.Reserva.AddAsync(entidad);
             await _context.SaveChangesAsync();
-            return (true, codigoReserva);
+            return (true, "Reserva exitosa. Código de reserva: " + codigoReserva);
         }
 
         private string GenerarCodigoReserva()
@@ -84,6 +92,6 @@ namespace AMR.DA
         }
 
 
-        
+
     }
 }
