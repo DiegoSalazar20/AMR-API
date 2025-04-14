@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using AMR.DA.Contexto;
+using AMR.DA.Entidades;
 using AMR.DA.Interfaces;
 using AMR.Dominio;
 using Microsoft.EntityFrameworkCore;
@@ -33,12 +35,14 @@ namespace AMR.DA
         {
             var tipoHabitacionesEntidad = await _context.TipoHabitacion.ToListAsync();
             var ofertasEntidad = await _context.Ofertas.ToListAsync();
+            var temporadasEntidad = await _context.Temporada.ToListAsync();
             DateTime fechaActual = DateTime.Today;
 
             foreach (var tipoHabitacionEntidad in tipoHabitacionesEntidad)
             {
-                tipoHabitacionEntidad.Precio +=
-                    tipoHabitacionEntidad.Precio * ObtenerDescuentoTemporada(fechaActual).Result;
+                decimal descuentoTemporada = ObtenerDescuentoTemporada(fechaActual, temporadasEntidad);
+                tipoHabitacionEntidad.Precio += tipoHabitacionEntidad.Precio * descuentoTemporada;
+
                 foreach (var ofertaEntidad in ofertasEntidad)
                 {
                     if (ofertaEntidad.IdTipoHabitacion == tipoHabitacionEntidad.IdTipoHabitacion &&
@@ -48,7 +52,7 @@ namespace AMR.DA
                             tipoHabitacionEntidad.Precio * ((decimal)ofertaEntidad.Descuento / 100);
                     }
                 }
-            } //foreach externo
+            }
 
             return tipoHabitacionesEntidad.Select(t => new TipoHabitacion
             {
@@ -58,14 +62,30 @@ namespace AMR.DA
                 Precio = t.Precio,
                 Imagen = t.Imagen
             });
-        } //ObtenerTarifas
+        }
 
-        private async Task<decimal> ObtenerDescuentoTemporada(DateTime fechaActual)
+        private decimal ObtenerDescuentoTemporada(DateTime fechaActual, List<TemporadaEntidad> temporadasEntidad)
         {
-            var temporadaEntidad = await _context.Temporada.FirstOrDefaultAsync(
-                t => t.Fecha_inicio < fechaActual && t.Fecha_final > fechaActual
-            );
-            return temporadaEntidad != null ? ((decimal)temporadaEntidad.Descuento) / 100 : 0;
-        } //obtenerDescuentoTemporada
+            var temporada = temporadasEntidad.FirstOrDefault(t =>
+                ValidarFechasSinAnio(fechaActual, t.Fecha_inicio, t.Fecha_final));
+
+            return temporada != null ? ((decimal)temporada.Descuento) / 100 : 0;
+        }
+
+        private bool ValidarFechasSinAnio(DateTime dia, DateTime inicioFecha, DateTime finFecha)
+        {
+            DateTime normalizedDia = new DateTime(2000, dia.Month, dia.Day);
+            DateTime normalizedInicio = new DateTime(2000, inicioFecha.Month, inicioFecha.Day);
+            DateTime normalizedFin = new DateTime(2000, finFecha.Month, finFecha.Day);
+
+            if (normalizedInicio <= normalizedFin)
+            {
+                return normalizedDia >= normalizedInicio && normalizedDia <= normalizedFin;
+            }
+            else
+            {
+                return normalizedDia >= normalizedInicio || normalizedDia <= normalizedFin;
+            }
+        }
     }
 }
