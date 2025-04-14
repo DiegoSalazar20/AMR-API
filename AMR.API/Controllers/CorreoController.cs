@@ -19,72 +19,71 @@ namespace AMR.API.Controllers
                 return BadRequest("Solicitud inválida.");
             }
 
-            // Construir el asunto y cuerpo del correo con HTML para un diseño profesional
             string subject = $"Confirmación de Reserva: {datos.CodigoReserva}";
             string body = $@"
-<html>
-<head>
-  <style>
-    body {{
-      font-family: Arial, sans-serif;
-      color: #333;
-      margin: 0;
-      padding: 0;
-    }}
-    .container {{
-      padding: 20px;
-    }}
-    .header {{
-      background-color: #f7bf7a;
-      padding: 15px;
-      text-align: center;
-      color: #3E5975;
-    }}
-    .content {{
-      margin: 20px 0;
-      line-height: 1.5;
-    }}
-    .content ul {{
-      list-style: none;
-      padding-left: 0;
-    }}
-    .content li {{
-      margin-bottom: 8px;
-    }}
-    .footer {{
-      font-size: 12px;
-      color: #666;
-      text-align: center;
-      border-top: 1px solid #ddd;
-      padding-top: 10px;
-      margin-top: 20px;
-    }}
-  </style>
-</head>
-<body>
-  <div class='container'>
-    <div class='header'>
-      <h1>Arena &amp; Mar Resort</h1>
-    </div>
-    <div class='content'>
-      <p>Estimado/a {datos.Nombre} {datos.Apellidos},</p>
-      <p>Nos complace confirmarle que su reserva ha sido registrada exitosamente.</p>
-      <p>Su código de reserva es: <strong>{datos.CodigoReserva}</strong></p>
-      <p><strong>Detalles de la Reserva:</strong></p>
-      <ul>
-        <li>Tipo de habitación: {datos.TipoHabitacion}</li>
-        <li>Ckeck-in: {datos.FechaLlegada:dd-MM-yyyy} a la 1:00pm</li>
-        <li>Check-out: {datos.FechaSalida:dd-MM-yyyy} a las 11:00am</li>
-      </ul>
-      <p>Si tiene alguna pregunta o requiere asistencia, por favor no dude en contactarnos.</p>
-      <p>¡Gracias por elegir Arena &amp; Mar Resort!</p>
-    </div>
-    <div class='footer'>
-      <p>© 2025 Arena &amp; Mar Resort. Todos los derechos reservados.</p>
-    </div>
-  </div>
-</body>
-</html>";
+            <html>
+                <head>
+                  <style>
+                    body {{
+                      font-family: Arial, sans-serif;
+                      color: #333;
+                      margin: 0;
+                      padding: 0;
+                    }}
+                    .container {{
+                      padding: 20px;
+                    }}
+                    .header {{
+                      background-color: #f7bf7a;
+                      padding: 15px;
+                      text-align: center;
+                      color: #3E5975;
+                    }}
+                    .content {{
+                      margin: 20px 0;
+                      line-height: 1.5;
+                    }}
+                    .content ul {{
+                      list-style: none;
+                      padding-left: 0;
+                    }}
+                    .content li {{
+                      margin-bottom: 8px;
+                    }}
+                    .footer {{
+                      font-size: 12px;
+                      color: #666;
+                      text-align: center;
+                      border-top: 1px solid #ddd;
+                      padding-top: 10px;
+                      margin-top: 20px;
+                    }}
+                  </style>
+                </head>
+            <body>
+              <div class='container'>
+                <div class='header'>
+                  <h1>Arena &amp; Mar Resort</h1>
+                </div>
+                <div class='content'>
+                  <p>Estimado/a {datos.Nombre} {datos.Apellidos},</p>
+                  <p>Nos complace confirmarle que su reserva ha sido registrada exitosamente.</p>
+                  <p>Su código de reserva es: <strong>{datos.CodigoReserva}</strong></p>
+                  <p><strong>Detalles de la Reserva:</strong></p>
+                  <ul>
+                    <li>Tipo de habitación: {datos.TipoHabitacion}</li>
+                    <li>Ckeck-in: {datos.FechaLlegada:dd-MM-yyyy} a la 1:00pm</li>
+                    <li>Check-out: {datos.FechaSalida:dd-MM-yyyy} a las 11:00am</li>
+                  </ul>
+                  <p>Si tiene alguna pregunta o requiere asistencia, por favor no dude en contactarnos.</p>
+                  <p>¡Gracias por elegir Arena &amp; Mar Resort!</p>
+                </div>
+                <div class='footer'>
+                  <p>© 2025 Arena &amp; Mar Resort. Todos los derechos reservados.</p>
+                </div>
+              </div>
+            </body>
+            </html>";
 
             try
             {
