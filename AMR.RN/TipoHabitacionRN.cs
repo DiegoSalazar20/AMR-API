@@ -28,9 +28,9 @@ namespace AMR.RN
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<TipoHabitacion>> ObtenerTarifas()
+        public async Task<IEnumerable<TipoHabitacion>> ObtenerTarifas()
         {
-            throw new NotImplementedException();
+            return await this._tipoHabitacionDA.ObtenerTarifas();
         }
     }
 }
