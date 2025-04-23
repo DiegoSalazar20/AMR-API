@@ -114,8 +114,35 @@ namespace AMR.DA
             }
         }
 
+        public async Task<string> ConsultarHabitacionesDisponibles(DateTime fechaInicio, DateTime fechaFin, int idTipoHabitacion)
+        {
+            var habitacionesDisponibles = await _context.Habitacion
+        .Include(h => h.TipoHabitacion)
+        .Where(h =>
+            h.Habilitada &&
+            (idTipoHabitacion == 0 || h.IdTipoHabitacion == idTipoHabitacion) &&
+            !_context.Reserva.Any(r =>
+                r.IdHabitacion == h.IdHabitacion &&
+                r.FechaLlegada < fechaFin &&
+                r.FechaSalida > fechaInicio))
+        .ToListAsync();
 
+            var ofertas = await ObtenerOfertas();
+            var temporadas = await ObtenerTemporadas();
 
+            var resultado = habitacionesDisponibles.Select(h => new
+            {
+                NumeroHabitacion = h.NumeroHabitacion,
+                TipoHabitacion = h.TipoHabitacion.Nombre,
+                Precio = CalcularPrecioTotal(
+                                       h.TipoHabitacion,
+                                       fechaInicio,
+                                       fechaFin,
+                                       ofertas,
+                                       temporadas)
+            });
 
+            return JsonConvert.SerializeObject(resultado);
+        }
     }
 }

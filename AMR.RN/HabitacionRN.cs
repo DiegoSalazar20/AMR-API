@@ -22,5 +22,9 @@ namespace AMR.RN
             return await this._habitacionDA.ConsultarDisponibilidad(fechaInicio,fechaFin,idTipoHabitacion);
         }
 
+        public async Task<string> ConsultarHabitacionesDisponibles(DateTime fechaInicio, DateTime fechaFin, int idTipoHabitacion)
+        {
+            return await this._habitacionDA.ConsultarHabitacionesDisponibles(fechaInicio,fechaFin, idTipoHabitacion);
+        }
     }
 }

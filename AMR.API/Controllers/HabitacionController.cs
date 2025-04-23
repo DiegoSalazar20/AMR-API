@@ -23,5 +23,12 @@ namespace AMR.API.Controllers
             return Ok(informacion);
         }
 
+        [HttpGet("HabitacionesDisponibles")]
+        public async Task<IActionResult> ConsultarHabitacionesDisponibles(DateTime fechainicio, DateTime fechafin, int idTipoHabitacion)
+        {
+            var informacion = await _habitacionRN.ConsultarHabitacionesDisponibles(fechainicio, fechafin, idTipoHabitacion);
+            return Ok(informacion);
+        }
+
     }
 }
