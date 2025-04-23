@@ -144,5 +144,56 @@ namespace AMR.DA
 
             return JsonConvert.SerializeObject(resultado);
         }
+
+        public async Task<string> VerEstadoHabitacionesHoy()
+        {
+            DateTime hoy = DateTime.Today;
+
+            
+            var habitaciones = await _context.Habitacion
+                .Include(h => h.TipoHabitacion)
+                .ToListAsync();
+
+            var reservasHoy = await _context.Reserva
+                .Where(r =>
+                    
+                    r.FechaLlegada.Date == hoy
+                  
+                    || (r.FechaLlegada.Date < hoy && r.FechaSalida.Date > hoy))
+                .ToListAsync();
+
+            
+            var resultado = habitaciones.Select(h =>
+            {
+                string estado;
+
+                if (!h.Habilitada)
+                {
+                    estado = "Deshabilitada";
+                }
+                else if (reservasHoy.Any(r => r.IdHabitacion == h.IdHabitacion && r.FechaLlegada.Date == hoy))
+                {
+                    estado = "Reservada";
+                }
+                else if (reservasHoy.Any(r => r.IdHabitacion == h.IdHabitacion && r.FechaLlegada.Date < hoy && r.FechaSalida.Date > hoy))
+                {
+                    estado = "Ocupada";
+                }
+                else
+                {
+                    estado = "Disponible";
+                }
+
+                return new
+                {
+                    NumeroHabitacion = h.NumeroHabitacion,
+                    TipoHabitacion = h.TipoHabitacion.Nombre,
+                    Estado = estado
+                };
+            });
+
+            return JsonConvert.SerializeObject(resultado);
+        }
+
     }
 }

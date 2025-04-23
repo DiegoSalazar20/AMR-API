@@ -30,5 +30,12 @@ namespace AMR.API.Controllers
             return Ok(informacion);
         }
 
+        [HttpGet("VerEstadoHabitacionesHoy")]
+        public async Task<IActionResult> VerEstadoHabitacionesHoy()
+        {
+            var informacion = await _habitacionRN.VerEstadoHabitacionesHoy();
+            return Ok(informacion);
+        }
+
     }
 }
