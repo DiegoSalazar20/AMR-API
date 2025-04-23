@@ -10,5 +10,6 @@ namespace AMR.RN.Interfaces
     public interface IHabitacionRN
     {
         public Task<string> ConsultarDisponibilidad(DateTime fechaInicio, DateTime fechaFin, int idTipoHabitacion);
+        public Task<string> ConsultarHabitacionesDisponibles(DateTime fechaInicio, DateTime fechaFin, int idTipoHabitacion);
     }
 }
