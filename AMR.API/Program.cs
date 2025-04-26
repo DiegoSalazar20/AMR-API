@@ -36,14 +36,15 @@ builder.Services.AddScoped<ITipoHabitacionDA, TipoHabitacionDA>();
 builder.Services.AddScoped<IComoLlegarRN, ComoLlegarRN>();
 builder.Services.AddScoped<IComoLlegarDA, ComoLlegarDA>();
 
+builder.Services.AddScoped<IContactenosRN, ContactenosRN>();
+builder.Services.AddScoped<IContactenosDA, ContactenosDA>();
+
 
 //Conexión a BD
 builder.Services.AddDbContext<ContextoBD>(options =>
 {
-    // Usar la cadena de conexión desde la configuración
     var connectionString = "workstation id=arenaymar.mssql.somee.com;packet size=4096;user id=diego1234_SQLLogin_1;pwd=o81yios9jl;data source=arenaymar.mssql.somee.com;persist security info=False;initial catalog=arenaymar;TrustServerCertificate=True";
     options.UseSqlServer(connectionString);
-    // Otros ajustes del contexto de base de datos pueden ser configurados aquí, si es necesario
 });
 
 
