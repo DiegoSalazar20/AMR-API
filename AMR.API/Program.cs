@@ -39,6 +39,9 @@ builder.Services.AddScoped<IComoLlegarDA, ComoLlegarDA>();
 builder.Services.AddScoped<IContactenosRN, ContactenosRN>();
 builder.Services.AddScoped<IContactenosDA, ContactenosDA>();
 
+builder.Services.AddScoped<IAdministradorRN, AdministradorRN>();
+builder.Services.AddScoped<IAdministradorDA, AdministradorDA>();
+
 
 //Conexión a BD
 builder.Services.AddDbContext<ContextoBD>(options =>
