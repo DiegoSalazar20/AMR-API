@@ -22,7 +22,7 @@ namespace AMR.DA
         public async Task<Administrador> InicioSesion(string nombreUsuario, string contrasena)
         {
             var adminEntidad = await _context.Administrador
-        .FirstOrDefaultAsync(a => a.NombreUsuario == nombreUsuario && a.Contrasena == contrasena && a.Estado);
+        .FirstOrDefaultAsync(a => a.NombreUsuario == nombreUsuario && a.Contrasena == contrasena);
 
             if (adminEntidad == null)
                 return null;
