@@ -37,5 +37,23 @@ namespace AMR.API.Controllers
             return Ok(informacion);
         }
 
+        [HttpPost("BloquearHabitacion")]
+        public async Task<IActionResult> BloquearHabitacion([FromQuery] int idTipoHabitacion, [FromQuery] DateTime fechaLlegada, [FromQuery] DateTime fechaSalida)
+        {
+            var (success, idHabitacion, token, expiracion, message) = await this._habitacionRN.BloquearHabitacion(idTipoHabitacion, fechaLlegada, fechaSalida);
+
+            if (!success)
+                return BadRequest(new { success, message });
+
+            return Ok(new
+            {
+                success,
+                idHabitacion,
+                token,
+                expiracion,
+                message
+            });
+        }
+
     }
 }
