@@ -8,7 +8,8 @@ namespace AMR.Dominio
 {
     public class RegistroReserva
     {
-        public int IdTipoHabitacion { get; set; }
+        public int IdHabitacion { get; set; }
+        public string BloqueoToken { get; set; }
         public string Nombre { get; set; }
         public string Apellidos { get; set; }
         public string Correo { get; set; }

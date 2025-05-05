@@ -21,7 +21,7 @@ namespace AMR.API.Controllers
         [HttpPost]
         public async Task<IActionResult> RegistrarPublicidad(RegistroReserva reserva)
         {
-            var resultado = await _reservaRN.RegistrarReserva(reserva.IdTipoHabitacion, reserva.Nombre, reserva.Apellidos, reserva.Correo, reserva.Tarjeta, reserva.FechaLlegada, reserva.FechaSalida);
+            var resultado = await _reservaRN.RegistrarReserva(reserva.IdHabitacion, reserva.BloqueoToken, reserva.Nombre, reserva.Apellidos, reserva.Correo, reserva.Tarjeta, reserva.FechaLlegada, reserva.FechaSalida);
             if (resultado.Item1)
                 return Ok(new { success = true, codigoReserva = resultado.Item2 });
             else

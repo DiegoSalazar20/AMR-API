@@ -17,6 +17,12 @@ namespace AMR.RN
         {
             _habitacionDA = habitacionDA;
         }
+
+        public async Task<(bool Exito, int IdHabitacion, string Token, DateTime Expiracion, string Message)> BloquearHabitacion(int idTipoHabitacion, DateTime fechaLlegada, DateTime fechaSalida)
+        {
+            return await this._habitacionDA.BloquearHabitacion(idTipoHabitacion,fechaLlegada, fechaSalida);
+        }
+
         public async Task<string> ConsultarDisponibilidad(DateTime fechaInicio, DateTime fechaFin, int idTipoHabitacion)
         {
             return await this._habitacionDA.ConsultarDisponibilidad(fechaInicio,fechaFin,idTipoHabitacion);

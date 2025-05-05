@@ -45,15 +45,26 @@ namespace AMR.DA
 
         private async Task<List<TipoHabitacionEntidad>> ObtenerTiposDisponibles(DateTime fechaInicio, DateTime fechaFin, int idTipoHabitacion)
         {
+            var ahora = DateTime.UtcNow;
+
             var query = _context.Habitacion
                 .Include(h => h.TipoHabitacion)
-                .Where(h => h.Habilitada &&
-                            (idTipoHabitacion == 0 || h.IdTipoHabitacion == idTipoHabitacion) &&
-                            !_context.Reserva.Any(r => r.IdHabitacion == h.IdHabitacion &&
-                                                        r.FechaLlegada < fechaFin &&
-                                                        r.FechaSalida > fechaInicio));
+                .Where(h =>
+                    h.Habilitada
+                    && (idTipoHabitacion == 0 || h.IdTipoHabitacion == idTipoHabitacion)
+                    && !_context.Reserva.Any(r =>
+                        r.IdHabitacion == h.IdHabitacion &&
+                        r.FechaLlegada < fechaFin &&
+                        r.FechaSalida > fechaInicio)
+                    && !_context.HabitacionesPorReservar.Any(ho =>
+                        ho.IdHabitacion == h.IdHabitacion &&
+                        ho.Expiracion > ahora)
+                );
 
-            return await query.Select(h => h.TipoHabitacion).Distinct().ToListAsync();
+            return await query
+                .Select(h => h.TipoHabitacion)
+                .Distinct()
+                .ToListAsync();
         }
 
         private async Task<List<OfertaEntidad>> ObtenerOfertas()
@@ -195,5 +206,50 @@ namespace AMR.DA
             return JsonConvert.SerializeObject(resultado);
         }
 
+        public async Task<(bool Exito, int IdHabitacion, string Token, DateTime Expiracion, string Message)> BloquearHabitacion(int idTipoHabitacion, DateTime fechaLlegada, DateTime fechaSalida)
+        {
+             TimeSpan DuracionBloqueo = TimeSpan.FromMinutes(5);
+        var ahora = DateTime.UtcNow;
+
+            var habitacion = await _context.Habitacion
+                .Where(h =>
+                    h.Habilitada &&
+                    h.IdTipoHabitacion == idTipoHabitacion &&
+
+                    !_context.Reserva.Any(r =>
+                        r.IdHabitacion == h.IdHabitacion &&
+                        r.FechaLlegada < fechaSalida &&
+                        r.FechaSalida > fechaLlegada) &&
+
+                    !_context.HabitacionesPorReservar.Any(ho =>
+                        ho.IdHabitacion == h.IdHabitacion &&
+                        ho.Expiracion > ahora)
+                )
+                .FirstOrDefaultAsync();
+
+            if (habitacion == null)
+            {
+                return (false, 0, null!, default,
+                        "No hay habitaciones disponibles (o todas están ya bloqueadas).");
+            }
+
+            var token = Guid.NewGuid().ToString("N");
+            var expiracion = ahora.Add(DuracionBloqueo);
+
+            var hold = new HabitacionesPorReservarEntidad
+            {
+                IdHabitacion = habitacion.IdHabitacion,
+                Token = token,
+                Expiracion = expiracion
+            };
+            _context.HabitacionesPorReservar.Add(hold);
+            await _context.SaveChangesAsync();
+
+            return (true,
+                    habitacion.IdHabitacion,
+                    token,
+                    expiracion,
+                    "Hold creado correctamente.");
+        }
     }
 }

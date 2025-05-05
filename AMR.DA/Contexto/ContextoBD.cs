@@ -25,5 +25,6 @@ namespace AMR.DA.Contexto
         public DbSet<ComoLlegarEntidad> ComoLlegar { get; set; }
         public DbSet<ContactenosEntidad> Contactenos { get; set; }
         public DbSet<AdministradorEntidad> Administrador { get; set; }
+        public DbSet<HabitacionesPorReservarEntidad> HabitacionesPorReservar { get; set; }
     }
 }

@@ -21,8 +21,21 @@ namespace AMR.DA
             _context = context;
         }
 
-        public async Task<(bool, string)> RegistrarReserva(int idTipoHabitacion, string nombre, string apellido, string correo, string tarjeta, DateTime fechaLlegada, DateTime fechaSalida)
+        public async Task<(bool, string)> RegistrarReserva(int idHabitacion, string bloqueoToken, string nombre, string apellido, string correo, string tarjeta, DateTime fechaLlegada, DateTime fechaSalida)
         {
+
+            var habitacion = await _context.Habitacion
+        .FirstOrDefaultAsync(h => h.IdHabitacion == idHabitacion && h.Habilitada);
+            if (habitacion == null)
+                return (false, "La habitación seleccionada no es válida o está deshabilitada.");
+
+            var hold = await _context.HabitacionesPorReservar
+        .FirstOrDefaultAsync(h =>
+            h.IdHabitacion == idHabitacion &&
+            h.Token == bloqueoToken &&
+            h.Expiracion > DateTime.UtcNow);
+            if (hold == null)
+                return (false, "El bloqueo (hold) ha expirado o es inválido.");
 
             string codigoReserva;
             do
@@ -38,21 +51,11 @@ namespace AMR.DA
             }
             while (await _context.Reserva.AnyAsync(r => r.NumeroTransaccion == numeroTransaccion));
 
-            var habitacionDisponible = await _context.Habitacion.FirstOrDefaultAsync(h =>
-                h.IdTipoHabitacion == idTipoHabitacion &&
-                !_context.Reserva.Any(r => r.IdHabitacion == h.IdHabitacion &&
-                    r.FechaLlegada < fechaSalida && r.FechaSalida > fechaLlegada));
-
-            if (habitacionDisponible == null)
-            {
-                return (false, "No hay habitaciones disponibles para esas fechas.");
-            }
-
             ReservaEntidad entidad = new ReservaEntidad
             {
                 CodigoReserva = codigoReserva,
                 NumeroTransaccion = numeroTransaccion,
-                IdHabitacion = habitacionDisponible.IdHabitacion,
+                IdHabitacion = idHabitacion,
                 Nombre = nombre,
                 Apellidos = apellido,
                 Email = correo,
@@ -62,7 +65,9 @@ namespace AMR.DA
             };
 
             await _context.Reserva.AddAsync(entidad);
+            _context.HabitacionesPorReservar.Remove(hold);
             await _context.SaveChangesAsync();
+            
             return (true, "Reserva exitosa. Código de reserva: " + codigoReserva);
         }
 
