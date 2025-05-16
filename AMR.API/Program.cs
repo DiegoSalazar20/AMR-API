@@ -42,6 +42,9 @@ builder.Services.AddScoped<IContactenosDA, ContactenosDA>();
 builder.Services.AddScoped<IAdministradorRN, AdministradorRN>();
 builder.Services.AddScoped<IAdministradorDA, AdministradorDA>();
 
+builder.Services.AddScoped<ITemporadaRN, TemporadaRN>();
+builder.Services.AddScoped<ITemporadaDA, TemporadaDA>();
+
 
 //Conexión a BD
 builder.Services.AddDbContext<ContextoBD>(options =>
