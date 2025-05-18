@@ -49,9 +49,9 @@ namespace AMR.API.Controllers
             );
 
             if (!resultado)
-                return NotFound("Temporada no encontrada o no se pudo actualizar.");
+                return NotFound(false);
 
-            return Ok("Temporada actualizada correctamente.");
+            return Ok(true);
         }
 
         [HttpDelete("{id}")]
@@ -60,9 +60,9 @@ namespace AMR.API.Controllers
             var resultado = await _temporadaRN.EliminarTemporada(id);
 
             if (!resultado)
-                return NotFound("Temporada no encontrada o ya eliminada.");
+                return NotFound(false);
 
-            return Ok("Temporada eliminada correctamente.");
+            return Ok(true);
         }
 
 
