@@ -24,15 +24,33 @@ namespace AMR.DA
 
         public async Task<bool> ActualizarTemporada(int idTemporada, string nombre_temporada, DateTime fecha_inicio, DateTime fecha_final, int descuento)
         {
-            var temporadaExistente = await _context.Temporada.FindAsync(idTemporada);
+            var temporadaActualizada = await _context.Temporada.FindAsync(idTemporada);
 
-            if (temporadaExistente == null)
+            if (temporadaActualizada == null)
                 return false;
 
-            temporadaExistente.Nombre_temporada = nombre_temporada;
-            temporadaExistente.Fecha_inicio = fecha_inicio;
-            temporadaExistente.Fecha_final = fecha_final;
-            temporadaExistente.Descuento = descuento;
+            temporadaActualizada.Nombre_temporada = nombre_temporada;
+            temporadaActualizada.Fecha_inicio = fecha_inicio;
+            temporadaActualizada.Fecha_final = fecha_final;
+            temporadaActualizada.Descuento = descuento;
+
+            var otraTemporada = await _context.Temporada
+                .FirstOrDefaultAsync(t => t.IdTemporada != idTemporada);
+
+            if (otraTemporada != null)
+            {
+                otraTemporada.Fecha_inicio = fecha_final.AddDays(1);
+
+                otraTemporada.Fecha_final = fecha_inicio.AddDays(-1);
+
+                if (otraTemporada.Fecha_final < otraTemporada.Fecha_inicio)
+                {
+                    otraTemporada.Fecha_final = new DateTime(
+                        otraTemporada.Fecha_final.Year + 1,
+                        otraTemporada.Fecha_final.Month,
+                        otraTemporada.Fecha_final.Day);
+                }
+            }
 
             await _context.SaveChangesAsync();
             return true;
