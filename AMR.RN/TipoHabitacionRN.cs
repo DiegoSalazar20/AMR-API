@@ -18,9 +18,9 @@ namespace AMR.RN
         {
             _tipoHabitacionDA = tipoHabitacionDA;
         }
-        public Task<bool> ActualizarDatosHabiacion(string nombre, string descripcion, decimal tarifa, string imagen)
+        public async Task<bool> ActualizarDatosHabitacion(string nombre, string descripcion, decimal tarifa, string imagen)
         {
-            throw new NotImplementedException();
+            return await this._tipoHabitacionDA.ActualizarDatosHabitacion(nombre, descripcion, tarifa, imagen);
         }
 
         public Task<TipoHabitacion> ObtenerDatosTipoHabitacion(int idTipoHabitacion)

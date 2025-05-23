@@ -21,9 +21,42 @@ namespace AMR.DA
             _context = context;
         }
 
-        public Task<bool> ActualizarDatosHabiacion(string nombre, string descripcion, decimal tarifa, string imagen)
+        public async Task<bool> ActualizarDatosHabitacion(string nombre, string descripcion, decimal tarifa, string imagen)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var tipoHabitacionExistente = await _context.TipoHabitacion
+                    .FirstOrDefaultAsync(t => t.Nombre == nombre);
+
+                if (tipoHabitacionExistente == null)
+                {
+                    return false;
+                }
+
+                if (!string.IsNullOrEmpty(descripcion))
+                {
+                    tipoHabitacionExistente.Descripcion = descripcion;
+                }
+
+                if (tarifa >= 0)
+                {
+                    tipoHabitacionExistente.Precio = tarifa;
+                }
+
+                if (!string.IsNullOrEmpty(imagen))
+                {
+                    tipoHabitacionExistente.Imagen = imagen;
+                }
+
+                var resultado = await _context.SaveChangesAsync();
+
+                // Devuelve true si al menos un cambio se realizó
+                return resultado > 0;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public Task<TipoHabitacion> ObtenerDatosTipoHabitacion(int idTipoHabitacion)

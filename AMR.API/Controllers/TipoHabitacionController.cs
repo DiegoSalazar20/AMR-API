@@ -22,5 +22,19 @@ namespace AMR.API.Controllers
             return Ok(informacion);
         }//ObtenerOfertas
 
+        [HttpPut("ActualizarDatosHabitacion")]
+        public async Task<IActionResult> ActualizarDatosHabitacion(string nombre, string descripcion, decimal tarifa, string imagen)
+        {
+            var resultado = await _tipoHabitacionRn.ActualizarDatosHabitacion(nombre, descripcion, tarifa, imagen);
+            if (resultado)
+            {
+                return Ok("Los datos de la habitación se han actualizado correctamente.");
+            }
+            else
+            {
+                return BadRequest("No se pudo actualizar los datos de la habitación.");
+            }
+        }//ActualizarDatosHabitacion
+
     }//TipoHabitacionController
 }
