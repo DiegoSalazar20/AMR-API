@@ -21,7 +21,7 @@ namespace AMR.DA.Entidades
         public DateTime Fecha_final { get; set; }
         [Required]
         public int Descuento { get; set; }
-        [ForeignKey("IdHabitacion")]
+        [ForeignKey("IdTipoHabitacion")]
         public int IdTipoHabitacion { get; set; }
     }
 }
