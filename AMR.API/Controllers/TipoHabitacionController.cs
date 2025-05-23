@@ -1,4 +1,5 @@
-﻿using AMR.RN.Interfaces;
+﻿using AMR.Dominio;
+using AMR.RN.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,9 +24,9 @@ namespace AMR.API.Controllers
         }//ObtenerOfertas
 
         [HttpPut("ActualizarDatosHabitacion")]
-        public async Task<IActionResult> ActualizarDatosHabitacion(string nombre, string descripcion, decimal tarifa, string imagen)
+        public async Task<IActionResult> ActualizarDatosHabitacion(TipoHabitacion tipoHabitacion)
         {
-            var resultado = await _tipoHabitacionRn.ActualizarDatosHabitacion(nombre, descripcion, tarifa, imagen);
+            var resultado = await _tipoHabitacionRn.ActualizarDatosHabitacion(tipoHabitacion);
             if (resultado)
             {
                 return Ok("Los datos de la habitación se han actualizado correctamente.");
