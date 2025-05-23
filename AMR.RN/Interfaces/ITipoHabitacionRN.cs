@@ -9,7 +9,7 @@ namespace AMR.RN.Interfaces
 {
     public interface ITipoHabitacionRN
     {
-        public Task<bool> ActualizarDatosHabiacion(string nombre, string descripcion, decimal tarifa, string imagen);
+        public Task<bool> ActualizarDatosHabitacion(string nombre, string descripcion, decimal tarifa, string imagen);
         public Task<TipoHabitacion> ObtenerDatosTipoHabitacion(int idTipoHabitacion);
         public Task<IEnumerable<TipoHabitacion>> ObtenerTarifas();
     }
