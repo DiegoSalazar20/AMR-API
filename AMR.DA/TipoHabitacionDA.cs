@@ -23,40 +23,18 @@ namespace AMR.DA
 
         public async Task<bool> ActualizarDatosHabitacion(TipoHabitacion tipoHabitacion)
         {
-            try
-            {
-                var tipoHabitacionExistente = await _context.TipoHabitacion
-                    .FirstOrDefaultAsync(t => t.IdTipoHabitacion == tipoHabitacion.IdTipoHabitacion);
+            var habitacionExistente = await _context.TipoHabitacion.FindAsync(tipoHabitacion.IdTipoHabitacion);
 
-                if (tipoHabitacionExistente == null)
-                {
-                    return false;
-                }
-
-                if (!string.IsNullOrEmpty(tipoHabitacion.Descripcion))
-                {
-                    tipoHabitacionExistente.Descripcion = tipoHabitacion.Descripcion;
-                }
-
-                if (tipoHabitacion.Precio >= 0)
-                {
-                    tipoHabitacionExistente.Precio = tipoHabitacion.Precio;
-                }
-
-                if (!string.IsNullOrEmpty(tipoHabitacion.Imagen))
-                {
-                    tipoHabitacionExistente.Imagen = tipoHabitacion.Imagen;
-                }
-
-                var resultado = await _context.SaveChangesAsync();
-
-                // Devuelve true si al menos un cambio se realizó
-                return resultado > 0;
-            }
-            catch (Exception)
-            {
+            if (habitacionExistente == null)
                 return false;
-            }
+
+            habitacionExistente.Descripcion = tipoHabitacion.Descripcion;
+            habitacionExistente.Precio=tipoHabitacion.Precio;
+            habitacionExistente.Nombre = tipoHabitacion.Nombre;
+            habitacionExistente.Imagen=tipoHabitacion.Imagen;
+
+            await _context.SaveChangesAsync();
+            return true;
         }
 
         public Task<TipoHabitacion> ObtenerDatosTipoHabitacion(int idTipoHabitacion)
