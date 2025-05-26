@@ -199,7 +199,8 @@ namespace AMR.DA
                 {
                     NumeroHabitacion = h.NumeroHabitacion,
                     TipoHabitacion = h.TipoHabitacion.Nombre,
-                    Estado = estado
+                    Estado = estado,
+                    IdTipoHabitacion= h.IdTipoHabitacion
                 };
             });
 
