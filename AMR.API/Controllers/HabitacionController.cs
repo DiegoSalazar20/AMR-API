@@ -55,5 +55,25 @@ namespace AMR.API.Controllers
             });
         }
 
+        [HttpPut("Habilitar")]
+        public async Task<IActionResult> HabilitarHabitacion(int idHabitacion)
+        {
+            var resultado = await _habitacionRN.HabilitarHabitacion(idHabitacion);
+            if (resultado)
+                return Ok(true);
+            else
+                return Ok(false);
+        }
+
+        [HttpPut("Deshabilitar")]
+        public async Task<IActionResult> DesabilitarHabitacion(int idHabitacion)
+        {
+            var resultado = await _habitacionRN.DeshabilitarHabitacion(idHabitacion);
+            if (resultado)
+                return Ok(true);
+            else
+                return Ok(false);
+        }
+
     }
 }

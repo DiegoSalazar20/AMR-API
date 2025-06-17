@@ -21,6 +21,50 @@ namespace AMR.DA
             _context = context;
         }
 
+        public async Task<bool> EliminarReserva(int idReserva)
+        {
+            try
+            {
+                var reserva = await _context.Reserva.FindAsync(idReserva);
+
+                if (reserva == null)
+                    return false;
+
+                _context.Reserva.Remove(reserva);
+                await _context.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public async Task<string> ObtenerTodasLasReservas()
+        {
+            var reservas = await _context.Reserva
+        .Include(r => r.Habitacion)
+            .ThenInclude(h => h.TipoHabitacion)
+        .Select(r => new
+        {
+            r.IdReserva,
+            r.CodigoReserva,
+            r.NumeroTransaccion,
+            r.IdHabitacion,
+            r.Nombre,
+            r.Apellidos,
+            r.Email,
+            r.Tarjeta,
+            r.FechaLlegada,
+            r.FechaSalida,
+            TipoHabitacionNombre = r.Habitacion.TipoHabitacion.Nombre
+        })
+        .ToListAsync();
+
+            return System.Text.Json.JsonSerializer.Serialize(reservas);
+        }
+
         public async Task<(bool, string)> RegistrarReserva(int idHabitacion, string bloqueoToken, string nombre, string apellido, string correo, string tarjeta, DateTime fechaLlegada, DateTime fechaSalida)
         {
 

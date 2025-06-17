@@ -11,5 +11,9 @@ namespace AMR.DA.Interfaces
     public interface IReservaDA
     {
         public Task<(bool, string)> RegistrarReserva(int idhabitacion, string bloqueoToken, string nombre, string apellido, string correo, string tarjeta, DateTime fechaLlegada, DateTime fechaSalida);
+
+        public Task<string> ObtenerTodasLasReservas();
+
+        public Task<bool> EliminarReserva(int idReserva);
     }
 }

@@ -18,6 +18,13 @@ namespace AMR.API.Controllers
             _reservaRN = reservaRN;
         }
 
+        [HttpGet()]
+        public async Task<IActionResult> ConsultarDispoibilidad()
+        {
+            var informacion = await _reservaRN.ObtenerTodasLasReservas();
+            return Ok(informacion);
+        }
+
         [HttpPost]
         public async Task<IActionResult> RegistrarPublicidad(RegistroReserva reserva)
         {
@@ -26,6 +33,17 @@ namespace AMR.API.Controllers
                 return Ok(new { success = true, codigoReserva = resultado.Item2 });
             else
                 return BadRequest(new { success = false, message = resultado.Item2 });
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> EliminarReserva(int id)
+        {
+            var resultado = await _reservaRN.EliminarReserva(id);
+
+            if (!resultado)
+                return NotFound(new { mensaje = "No se encontró la reserva o no se pudo eliminar." });
+
+            return Ok(resultado);
         }
 
     }

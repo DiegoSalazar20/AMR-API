@@ -13,5 +13,9 @@ namespace AMR.RN.Interfaces
         public Task<string> ConsultarHabitacionesDisponibles(DateTime fechaInicio, DateTime fechaFin, int idTipoHabitacion);
         public Task<string> VerEstadoHabitacionesHoy();
         public Task<(bool Exito, int IdHabitacion, string Token, DateTime Expiracion, string Message)> BloquearHabitacion(int idTipoHabitacion, DateTime fechaLlegada, DateTime fechaSalida);
+
+        public Task<bool> HabilitarHabitacion(int idHabitacion);
+
+        public Task<bool> DeshabilitarHabitacion(int idHabitacion);
     }
 }
