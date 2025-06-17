@@ -41,5 +41,10 @@ namespace AMR.RN
         {
             return await this._facilidadesDA.ObtenerInformacionVisibles();
         }
+
+        public async Task<bool> RegistrarFacilidad(Facilidades facilidad)
+        {
+            return await this._facilidadesDA.RegistrarFacilidad(facilidad);
+        }
     }
 }

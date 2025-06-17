@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AMR.DA.Contexto;
+using AMR.DA.Entidades;
 using AMR.DA.Interfaces;
 using AMR.Dominio;
 using Microsoft.EntityFrameworkCore;
@@ -101,6 +102,24 @@ namespace AMR.DA
                 Estado = f.Estado,
                 Imagen=f.Imagen
             });
+        }
+
+        public async Task<bool> RegistrarFacilidad(Facilidades facilidad)
+        {
+            if (facilidad == null)
+                return false;
+
+            FacilidadEntidad entidad = new FacilidadEntidad
+            {
+                Nombre = facilidad.Nombre,
+                Descripcion = facilidad.Descripcion,
+                Imagen = facilidad.Imagen,
+                Estado = true
+            };
+
+            await _context.Facilidad.AddAsync(entidad);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 

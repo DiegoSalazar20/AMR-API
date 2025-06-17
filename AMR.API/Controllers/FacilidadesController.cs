@@ -62,6 +62,16 @@ namespace AMR.API.Controllers
                 return Ok(false);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> RegistrarFacilidad(Facilidades facilidad)
+        {
+            var resultado = await _facilidadRN.RegistrarFacilidad(facilidad);
+            if (resultado)
+                return Ok(true);
+            else
+                return Ok(false);
+        }
+
 
     }
 }

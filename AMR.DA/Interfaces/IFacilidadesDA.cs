@@ -18,5 +18,7 @@ namespace AMR.DA.Interfaces
         public Task<bool> HabilitarFacilidad(int idFacilidad);
 
         public Task<bool> DeshabilitarFacilidad(int idFacilidad);
+
+        public Task<bool> RegistrarFacilidad(Facilidades facilidad);
     }
 }
