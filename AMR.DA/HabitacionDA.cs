@@ -252,5 +252,46 @@ namespace AMR.DA
                     expiracion,
                     "Hold creado correctamente.");
         }
+
+        public async Task<bool> HabilitarHabitacion(int idHabitacion)
+        {
+            var habitacion = await _context.Habitacion
+        .FirstOrDefaultAsync(h => h.IdHabitacion == idHabitacion);
+
+            if (habitacion == null)
+                return false;
+
+            if (habitacion.Habilitada)
+                return true;
+
+            habitacion.Habilitada = true;
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> DeshabilitarHabitacion(int idHabitacion)
+        {
+            var hoy = DateTime.Today;
+
+            var habitacion = await _context.Habitacion
+                .FirstOrDefaultAsync(h => h.IdHabitacion == idHabitacion);
+
+            if (habitacion == null)
+                return false;
+
+            bool tieneReservas = await _context.Reserva
+                .AnyAsync(r =>
+                    r.IdHabitacion == idHabitacion &&
+                    r.FechaSalida > hoy);
+
+            if (tieneReservas)
+                return false;
+
+            habitacion.Habilitada = false;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
     }
 }

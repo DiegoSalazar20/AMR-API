@@ -33,6 +33,16 @@ namespace AMR.RN
             return await this._habitacionDA.ConsultarHabitacionesDisponibles(fechaInicio,fechaFin, idTipoHabitacion);
         }
 
+        public async Task<bool> DeshabilitarHabitacion(int idHabitacion)
+        {
+            return await this._habitacionDA.DeshabilitarHabitacion(idHabitacion);
+        }
+
+        public async Task<bool> HabilitarHabitacion(int idHabitacion)
+        {
+            return await this._habitacionDA.HabilitarHabitacion(idHabitacion);
+        }
+
         public async Task<string> VerEstadoHabitacionesHoy()
         {
             return await this._habitacionDA.VerEstadoHabitacionesHoy();
