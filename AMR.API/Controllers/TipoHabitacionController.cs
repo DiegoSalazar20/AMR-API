@@ -23,6 +23,13 @@ namespace AMR.API.Controllers
             return Ok(informacion);
         }//ObtenerOfertas
 
+        [HttpGet("Preciosbase")]
+        public async Task<IActionResult> Preciosbase()
+        {
+            var informacion = await _tipoHabitacionRn.ObtenerDatosTiposHabitaciones();
+            return Ok(informacion);
+        }
+
         [HttpPut("ActualizarDatosHabitacion")]
         public async Task<IActionResult> ActualizarDatosHabitacion(TipoHabitacion tipoHabitacion)
         {

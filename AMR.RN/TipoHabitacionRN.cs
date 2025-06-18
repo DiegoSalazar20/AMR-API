@@ -23,9 +23,9 @@ namespace AMR.RN
             return await this._tipoHabitacionDA.ActualizarDatosHabitacion(tipoHabitacion);
         }
 
-        public Task<TipoHabitacion> ObtenerDatosTipoHabitacion(int idTipoHabitacion)
+        public async Task<IEnumerable<TipoHabitacion>> ObtenerDatosTiposHabitaciones()
         {
-            throw new NotImplementedException();
+            return await this._tipoHabitacionDA.ObtenerDatosTiposHabitaciones();
         }
 
         public async Task<IEnumerable<TipoHabitacion>> ObtenerTarifas()

@@ -37,9 +37,19 @@ namespace AMR.DA
             return true;
         }
 
-        public Task<TipoHabitacion> ObtenerDatosTipoHabitacion(int idTipoHabitacion)
+        public async Task<IEnumerable<TipoHabitacion>> ObtenerDatosTiposHabitaciones()
         {
-            throw new NotImplementedException();
+            var tiposhabitaciones = await _context.TipoHabitacion.ToListAsync();
+
+            return tiposhabitaciones.Select(f => new TipoHabitacion
+            {
+                IdTipoHabitacion = f.IdTipoHabitacion,
+                Nombre = f.Nombre,
+                Descripcion = f.Descripcion,
+                Precio = f.Precio,
+                Imagen = f.Imagen
+            });
+
         }
 
         public async Task<IEnumerable<TipoHabitacion>> ObtenerTarifas()
