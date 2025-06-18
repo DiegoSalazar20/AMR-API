@@ -255,8 +255,9 @@ namespace AMR.DA
 
         public async Task<bool> HabilitarHabitacion(int idHabitacion)
         {
+            string numero = idHabitacion + "";
             var habitacion = await _context.Habitacion
-        .FirstOrDefaultAsync(h => h.IdHabitacion == idHabitacion);
+                .FirstOrDefaultAsync(h => h.NumeroHabitacion == numero);
 
             if (habitacion == null)
                 return false;
@@ -273,9 +274,10 @@ namespace AMR.DA
         public async Task<bool> DeshabilitarHabitacion(int idHabitacion)
         {
             var hoy = DateTime.Today;
+            string numero = idHabitacion + "";
 
             var habitacion = await _context.Habitacion
-                .FirstOrDefaultAsync(h => h.IdHabitacion == idHabitacion);
+                .FirstOrDefaultAsync(h => h.NumeroHabitacion == numero);
 
             if (habitacion == null)
                 return false;
