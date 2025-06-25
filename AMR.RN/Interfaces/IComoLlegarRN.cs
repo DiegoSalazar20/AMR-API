@@ -10,5 +10,6 @@ namespace AMR.RN.Interfaces
     public interface IComoLlegarRN
     {
         public Task<ComoLlegar> ObtenerInformacion();
+        public Task<bool> ActualizarInformacion(ComoLlegar comollegar);
     }
 }

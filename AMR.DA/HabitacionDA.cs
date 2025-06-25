@@ -253,10 +253,10 @@ namespace AMR.DA
                     "Hold creado correctamente.");
         }
 
-        public async Task<bool> HabilitarHabitacion(int idHabitacion)
+        public async Task<bool> HabilitarHabitacion(string idHabitacion)
         {
             var habitacion = await _context.Habitacion
-        .FirstOrDefaultAsync(h => h.IdHabitacion == idHabitacion);
+                .FirstOrDefaultAsync(h => h.NumeroHabitacion == idHabitacion);
 
             if (habitacion == null)
                 return false;
@@ -270,22 +270,29 @@ namespace AMR.DA
             return true;
         }
 
-        public async Task<bool> DeshabilitarHabitacion(int idHabitacion)
+        public async Task<bool> DeshabilitarHabitacion(string idHabitacion)
         {
             var hoy = DateTime.Today;
+            var horaActual = DateTime.Now;
 
             var habitacion = await _context.Habitacion
-                .FirstOrDefaultAsync(h => h.IdHabitacion == idHabitacion);
+                .FirstOrDefaultAsync(h => h.NumeroHabitacion == idHabitacion);
 
             if (habitacion == null)
                 return false;
 
+            var idHabitacionADeshabilitar = habitacion.IdHabitacion;
+
             bool tieneReservas = await _context.Reserva
-                .AnyAsync(r =>
-                    r.IdHabitacion == idHabitacion &&
-                    r.FechaSalida > hoy);
+                .AnyAsync(r => r.IdHabitacion == idHabitacionADeshabilitar && r.FechaSalida > hoy);
 
             if (tieneReservas)
+                return false;
+
+            bool enProcesoDeReserva = await _context.HabitacionesPorReservar
+                .AnyAsync(h => h.IdHabitacion == idHabitacionADeshabilitar && h.Expiracion > horaActual);
+
+            if (enProcesoDeReserva)
                 return false;
 
             habitacion.Habilitada = false;

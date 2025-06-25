@@ -18,6 +18,21 @@ namespace AMR.DA
         {
             _context = context;
         }
+
+        public async Task<bool> ActualizarInformacion(ComoLlegar comollegar)
+        {
+            var homeEntity = await _context.ComoLlegar.FirstOrDefaultAsync();
+            if (homeEntity == null)
+            {
+                return false;
+            }
+
+            homeEntity.Descripcion = comollegar.Descripcion;
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         public async Task<ComoLlegar> ObtenerInformacion()
         {
             try

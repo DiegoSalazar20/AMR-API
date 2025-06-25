@@ -56,7 +56,7 @@ namespace AMR.API.Controllers
         }
 
         [HttpPut("Habilitar")]
-        public async Task<IActionResult> HabilitarHabitacion(int idHabitacion)
+        public async Task<IActionResult> HabilitarHabitacion(string idHabitacion)
         {
             var resultado = await _habitacionRN.HabilitarHabitacion(idHabitacion);
             if (resultado)
@@ -66,7 +66,7 @@ namespace AMR.API.Controllers
         }
 
         [HttpPut("Deshabilitar")]
-        public async Task<IActionResult> DesabilitarHabitacion(int idHabitacion)
+        public async Task<IActionResult> DesabilitarHabitacion(string idHabitacion)
         {
             var resultado = await _habitacionRN.DeshabilitarHabitacion(idHabitacion);
             if (resultado)
