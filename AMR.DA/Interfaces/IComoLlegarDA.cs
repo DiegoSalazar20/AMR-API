@@ -10,5 +10,6 @@ namespace AMR.DA.Interfaces
     public interface IComoLlegarDA
     {
         public Task<ComoLlegar> ObtenerInformacion();
+        public Task<bool> ActualizarInformacion(ComoLlegar comollegar);
     }
 }

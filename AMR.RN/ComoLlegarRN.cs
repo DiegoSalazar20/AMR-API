@@ -18,6 +18,11 @@ namespace AMR.RN
             _comoLlegarDA = comoLlegarDA;
         }
 
+        public async Task<bool> ActualizarInformacion(ComoLlegar comollegar)
+        {
+            return await this._comoLlegarDA.ActualizarInformacion(comollegar);
+        }
+
         public async Task<ComoLlegar> ObtenerInformacion()
         {
             return await this._comoLlegarDA.ObtenerInformacion();

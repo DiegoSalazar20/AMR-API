@@ -33,12 +33,12 @@ namespace AMR.RN
             return await this._habitacionDA.ConsultarHabitacionesDisponibles(fechaInicio,fechaFin, idTipoHabitacion);
         }
 
-        public async Task<bool> DeshabilitarHabitacion(int idHabitacion)
+        public async Task<bool> DeshabilitarHabitacion(string idHabitacion)
         {
             return await this._habitacionDA.DeshabilitarHabitacion(idHabitacion);
         }
 
-        public async Task<bool> HabilitarHabitacion(int idHabitacion)
+        public async Task<bool> HabilitarHabitacion(string idHabitacion)
         {
             return await this._habitacionDA.HabilitarHabitacion(idHabitacion);
         }
